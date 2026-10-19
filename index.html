@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocketSight | Court Case Search by M1ndseye</title>
+  <link rel="canonical" href="https://docketsight.com/" />
+  <meta property="og:title" content="DocketSight, powered by M1ndseye" />
+  <meta property="og:description" content="Free federal case search by state, judge, nature of suit and law firm, from the makers of trial-ready 3D visuals." />
+  <meta name="description" content="DocketSight, powered by M1ndseye: search federal cases by state, judge, nature of suit and law firm. Free tool by the makers of trial-ready 3D visuals." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="config.js" onerror="void 0"></script>
+  <script src="demo-data.js"></script>
+  <script src="courts.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo">Docket<span>Sight</span><small>powered by M1ndseye</small></a>
+      <ul class="nav__links">
+        <li><a href="#search" class="nav__link">Search</a></li>
+        <li><a href="#results" class="nav__link">Results</a></li>
+        <li><a href="#services" class="nav__link nav__link--btn">Trial visuals</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO / SEARCH -->
+    <section class="hero" id="search">
+      <div class="container">
+        <p class="hero__eyebrow">Free case research · powered by M1ndseye</p>
+        <h1 class="hero__title">Search U.S. court cases <span class="accent">in seconds.</span></h1>
+        <p class="hero__sub">Millions of federal cases and court opinions. Search by name, topic, or statute, or leave it blank and filter by state, judge, and type of case.</p>
+
+        <form class="search" id="search-form" role="search">
+          <label for="search-input" class="sr-only">Search court cases</label>
+          <input
+            id="search-input"
+            class="search__input"
+            type="search"
+            placeholder="Try “qualified immunity”, “Amazon”, “wage theft”… or leave blank"
+            autocomplete="off"
+          />
+          <button class="search__btn" type="submit">Search</button>
+        </form>
+
+        <div class="source-toggle" role="radiogroup" aria-label="What to search">
+          <label><input type="radio" name="source" value="r" checked /> Federal cases</label>
+          <label><input type="radio" name="source" value="o" /> Court opinions</label>
+        </div>
+
+        <!-- Token: each visitor connects their own free CourtListener token (stored only in their browser) -->
+        <div class="token" id="token-panel">
+          <p class="token__status" id="token-status"></p>
+          <form class="token__form" id="token-form" hidden>
+            <label for="token-input" class="sr-only">CourtListener API token</label>
+            <input id="token-input" class="token__input" type="password" placeholder="Paste your CourtListener API token" autocomplete="off" />
+            <button class="token__btn" type="submit">Connect</button>
+          </form>
+          <p class="token__help" id="token-help" hidden>
+            Free at <a href="https://www.courtlistener.com/sign-in/" target="_blank" rel="noopener">courtlistener.com</a>
+            → Profile → Developer Tools → Your API Token. It's saved only in this browser and sent only to CourtListener.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="results" id="results">
+      <div class="container">
+        <div class="results__header">
+          <h2 class="results__title" id="results-title">Results</h2>
+          <p class="results__count" id="results-count"></p>
+        </div>
+
+        <!-- Filters: each change runs a new search on CourtListener -->
+        <div class="filters" id="filters">
+          <div class="filter">
+            <label for="state-filter" class="filter__label">State</label>
+            <select id="state-filter" class="select" data-filter>
+              <option value="all">All states</option>
+            </select>
+          </div>
+
+          <div class="filter">
+            <label for="level-filter" class="filter__label">Court level</label>
+            <select id="level-filter" class="select" data-filter>
+              <option value="all">All levels</option>
+            </select>
+          </div>
+
+          <div class="filter">
+            <label for="court-filter" class="filter__label">Court</label>
+            <select id="court-filter" class="select" data-filter>
+              <option value="all">Pick a state first</option>
+            </select>
+          </div>
+
+          <div class="filter" data-dockets-only>
+            <label for="stage-filter" class="filter__label">Case stage</label>
+            <select id="stage-filter" class="select" data-filter>
+              <option value="all">Any stage</option>
+              <option value="new">New &amp; open (last 90 days)</option>
+              <option value="open">Open (not yet closed)</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+
+          <div class="filter" data-dockets-only>
+            <label for="suit-filter" class="filter__label">Nature of suit</label>
+            <select id="suit-filter" class="select" data-filter>
+              <option value="all">Any type of case</option>
+            </select>
+          </div>
+
+          <div class="filter" data-dockets-only>
+            <label for="cause-filter" class="filter__label">Cause (law)</label>
+            <select id="cause-filter" class="select" data-filter>
+              <option value="all">Any cause</option>
+            </select>
+          </div>
+
+          <div class="filter" data-dockets-only>
+            <label for="judge-filter" class="filter__label">Judge</label>
+            <select id="judge-filter" class="select" data-filter>
+              <option value="all">Any judge</option>
+            </select>
+          </div>
+
+          <div class="filter">
+            <label for="sort-filter" class="filter__label">Sort by</label>
+            <select id="sort-filter" class="select">
+              <option value="DEFAULT">Relevance</option>
+              <option value="NEWEST">Newest filed</option>
+              <option value="OLDEST">Oldest filed</option>
+              <option value="A_TO_Z">Name: A to Z</option>
+              <option value="Z_TO_A">Name: Z to A</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filters__footer">
+          <div class="filters__left">
+            <label class="checkbox" data-dockets-only>
+              <input type="checkbox" id="firm-only" />
+              Only cases with a law firm listed
+            </label>
+            <p class="filters__note" id="filters-note"></p>
+          </div>
+          <div class="filters__actions">
+            <button type="button" class="filters__clear" id="clear-filters" hidden>Clear filters</button>
+            <button type="button" class="export-btn" id="export-leads" hidden>Export leads (CSV)</button>
+          </div>
+        </div>
+
+        <!-- Sample-mode notice -->
+        <p class="notice" id="sample-notice" hidden></p>
+
+        <!-- Loading state -->
+        <div class="loading" id="loading" hidden>
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Searching the court records…</p>
+        </div>
+
+        <!-- Empty / error messages -->
+        <p class="status" id="status" role="status" hidden></p>
+
+        <!-- Case cards render here -->
+        <div class="case-list" id="case-list"></div>
+
+        <div class="load-more">
+          <button type="button" class="load-more__btn" id="load-more" hidden>Load more results</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+      <div class="container">
+        <p class="hero__eyebrow">From the makers of DocketSight</p>
+        <h2 class="services__title">Trial-ready 3D visuals by <span class="accent">M1ndseye</span></h2>
+        <p class="services__sub">Juries remember what they can see. M1ndseye turns complex injuries, devices and events into clear, accurate animations and demonstratives for trial, mediation and settlement.</p>
+
+        <div class="services__grid">
+          <article class="service">
+            <img class="service__icon" src="assets/icon-medical.png" alt="" width="64" height="64" loading="lazy" />
+            <h3 class="service__name">Medical &amp; mechanism of injury</h3>
+            <p>Anatomy, surgical procedures and how an injury happened, shown step by step.</p>
+          </article>
+          <article class="service">
+            <img class="service__icon" src="assets/icon-products.png" alt="" width="64" height="64" loading="lazy" />
+            <h3 class="service__name">Products &amp; medical devices</h3>
+            <p>Cutaways and animations that show how a product works, and how it failed.</p>
+          </article>
+          <article class="service">
+            <img class="service__icon" src="assets/icon-accident.png" alt="" width="64" height="64" loading="lazy" />
+            <h3 class="service__name">Accident reconstruction</h3>
+            <p>Vehicle, trucking and workplace incidents rebuilt from the evidence.</p>
+          </article>
+          <article class="service">
+            <img class="service__icon" src="assets/icon-timeline.png" alt="" width="64" height="64" loading="lazy" />
+            <h3 class="service__name">Timelines &amp; trial boards</h3>
+            <p>Clean demonstratives, timelines and presentations for court.</p>
+          </article>
+        </div>
+
+        <div class="services__cta">
+          <a class="search__btn" id="quote-btn" href="mailto:steve.mindseye@gmail.com?subject=Trial%20visuals%20quote%20(via%20DocketSight)">Request a quote</a>
+          <a class="services__link" href="https://m1ndseye.com" target="_blank" rel="noopener">See work at m1ndseye.com →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="container footer__inner">
+      <a href="#" class="nav__logo">Docket<span>Sight</span><small>powered by M1ndseye</small></a>
+      <ul class="footer__links">
+        <li><a href="#search">Search</a></li>
+        <li><a href="#services">Trial visuals</a></li>
+        <li><a href="https://m1ndseye.com" target="_blank" rel="noopener">M1ndseye</a></li>
+        <li><a href="#" id="disconnect-token">Disconnect token</a></li>
+      </ul>
+      <p class="footer__copy">&copy; 2026 M1ndseye International LLC. Case data from <a href="https://www.courtlistener.com/" target="_blank" rel="noopener">CourtListener</a>, a project of the Free Law Project. DocketSight is not affiliated with the Free Law Project. Not legal advice.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
