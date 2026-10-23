@@ -18,8 +18,8 @@
   <meta name="description" content="DocketSight, powered by M1ndseye: search federal cases by state, judge, nature of suit and law firm. Free tool by the makers of trial-ready 3D visuals." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=2" />
   <script src="config.js" onerror="void 0"></script>
   <script src="demo-data.js"></script>
   <script src="courts.js"></script>
@@ -190,10 +190,10 @@
     </section>
 
     <!-- SERVICES -->
-    <section class="services" id="services">
+    <section class="services" id="services" aria-labelledby="svc-h">
       <div class="container">
-        <p class="hero__eyebrow">From the makers of DocketSight</p>
-        <h2 class="services__title">Trial-ready 3D visuals by <span class="accent">M1ndseye</span></h2>
+        <a class="m1-mark" href="https://m1ndseye.com/" target="_blank" rel="noopener" aria-label="M1ndseye, a digital creation engine"><img src="assets/M1E_icon_2.svg" alt="" width="52" height="34" /><span>M1ndseye<em>Digital Creation Engine</em></span></a>
+        <h2 class="services__title" id="svc-h">Trial-ready 3D visuals by <span class="accent">M1ndseye</span></h2>
         <p class="services__sub">Juries remember what they can see. M1ndseye turns complex injuries, devices and events into clear, accurate animations and demonstratives for trial, mediation and settlement.</p>
 
         <div class="services__grid">
@@ -221,7 +221,7 @@
 
         <div class="services__cta">
           <a class="search__btn" id="quote-btn" href="mailto:steve.mindseye@gmail.com?subject=Trial%20visuals%20quote%20(via%20DocketSight)">Request a quote</a>
-          <a class="services__link" href="https://m1ndseye.com/2026-multi-channel-brand-campaign-showcase.html" target="_blank" rel="noopener">See my trial &amp; litigation work →</a>
+          <a class="services__link" href="https://m1ndseye.com/courtroom-animation.html" target="_blank" rel="noopener">See courtroom animation examples</a>
         </div>
       </div>
     </section>
@@ -234,7 +234,7 @@
       <ul class="footer__links">
         <li><a href="#search">Search</a></li>
         <li><a href="#services">Trial visuals</a></li>
-        <li><a href="https://m1ndseye.com" target="_blank" rel="noopener">M1ndseye</a></li>
+        <li><a class="m1-link" href="https://m1ndseye.com/" target="_blank" rel="noopener">M1ndseye.com</a></li>
         <li><a href="#" id="disconnect-token">Disconnect token</a></li>
       </ul>
       <p class="footer__copy">&copy; 2026 M1ndseye International LLC. Case data from <a href="https://www.courtlistener.com/" target="_blank" rel="noopener">CourtListener</a>, a project of the Free Law Project. DocketSight is not affiliated with the Free Law Project. Not legal advice.</p>
