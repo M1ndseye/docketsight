@@ -636,3 +636,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media (prefers-reduced-motion: reduce) { .case { animation: none; transition: none; } }
 .nav__link { font-size: 1rem; }
 .nav__link--btn { padding: 7px 20px; font-weight: 700; }
+
+.nav__brand { display: flex; align-items: center; gap: 14px; }
+.nav__m1e { display: grid; place-items: center; height: 40px; padding: 0 9px; border-radius: 12px; background: rgba(19,27,48,.7); border: 1px solid rgba(244,242,251,.14); transition: border-color .25s, transform .25s; }
+.nav__m1e img { display: block; height: 22px; width: auto; }
+.nav__m1e:hover { border-color: var(--accent); transform: translateY(-1px); }
